@@ -1,0 +1,12 @@
+{
+  "name": "dad_db",
+  "description": "Dashboard for Car Database",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "express": "4.x",
+    "mysql": "2.x",
+    "moment": "2.x",
+    "yargs": "1.x"
+  }
+}

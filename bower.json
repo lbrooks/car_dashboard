@@ -1,0 +1,24 @@
+{
+  "name": "dad_db",
+  "version": "1.0.0",
+  "authors": [
+    "Lawrence Brooks <84.lbrooks@gmail.com>"
+  ],
+  "description": "Dashboard for Car Database",
+  "main": "app.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.4.13",
+    "jquery": "~2.1.1",
+    "moment": "~2.8.4",
+    "rickshaw": "~1.5.0"
+  }
+}
