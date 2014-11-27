@@ -68,9 +68,9 @@ body * { vertical-align: top; }
         var newRows = d3.select('#js-tableData').selectAll('tr').data(data.result).enter().append("tr").style("background-color", function(d,i){return palette(i); });
         newRows.append("td").text(function(d){ return d.name; });
         newRows.append("td").text(function(d){ return d3.format(",s")(d.nextMarker*10000); });
-        newRows.append("td").text(function(d){ return d.est2 == 'Never' ?d.est2 :moment(new Date(d.est2*1000)).format("MMMM YYYY"); });
-        newRows.append("td").text(function(d){ return d.est4 == 'Never' ?d.est4 :moment(new Date(d.est4*1000)).format("MMMM YYYY"); });
-        newRows.append("td").text(function(d){ return d.est6 == 'Never' ?d.est6 :moment(new Date(d.est6*1000)).format("MMMM YYYY"); });
+        newRows.append("td").text(function(d){ return d.est2 == 'Never' ?d.est2 :moment.utc(new Date(d.est2*1000)).format("MMMM YYYY"); });
+        newRows.append("td").text(function(d){ return d.est4 == 'Never' ?d.est4 :moment.utc(new Date(d.est4*1000)).format("MMMM YYYY"); });
+        newRows.append("td").text(function(d){ return d.est6 == 'Never' ?d.est6 :moment.utc(new Date(d.est6*1000)).format("MMMM YYYY"); });
       });
 
       $.ajax({
@@ -120,7 +120,7 @@ body * { vertical-align: top; }
             formatter: function(series, x, y){
               var content = series.name
                   +'<span style="float:right;">'+d3.format(',')(parseInt(y))+' miles</span>'
-                  +'<div style="width:150px">'+moment(new Date(x*1000)).format('MMMM YYYY')+'</div>';
+                  +'<div style="width:150px">'+moment.utc(new Date(x*1000)).format('MMMM YYYY')+'</div>';
               return content;
             }
         });
@@ -146,7 +146,7 @@ body * { vertical-align: top; }
             formatter: function(series, x, y){
               var content = series.name
                   +'<span style="float:right;">'+d3.format(',')(parseInt(y))+' mpg</span>'
-                  +'<div style="width:150px">'+moment(new Date(x*1000)).format('MMMM YYYY')+'</div>';
+                  +'<div style="width:150px">'+moment.utc(new Date(x*1000)).format('MMMM YYYY')+'</div>';
               return content;
             }
         });

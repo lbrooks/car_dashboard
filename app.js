@@ -3,7 +3,7 @@ var argv = require('yargs').argv;
 var express = require('express');
 var app = express();
 var mysql = require('mysql');
-console.log(argv);
+
 var connection = mysql.createConnection({
   host: argv.host,
   user: argv.user,
@@ -11,10 +11,8 @@ var connection = mysql.createConnection({
   database: argv.database
 });
 var moment = require('moment');
-moment().format();
 
 connection.connect();
-
 setInterval(function(){
   connection.query("select 1 from dual", function(err, rows){
     console.log("Keep Database Alive");
