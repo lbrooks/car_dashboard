@@ -108,7 +108,36 @@ body * { vertical-align: top; }
           renderer:'line',
           series: tripSeries
         });
-        new Rickshaw.Graph.Axis.Time( { graph: trip_graph } );
+        new Rickshaw.Graph.Axis.Time( {
+          graph: trip_graph,
+          render: function() {
+            this.elements.forEach( function(e) {
+              e.parentNode.removeChild(e);
+            } );
+
+            this.elements = [];
+
+            var offsets = this.tickOffsets();
+
+            offsets.forEach( function(o) {
+              
+              if (self.graph.x(o.value) > self.graph.x.range()[1]) return;
+          
+              var element = document.createElement('div');
+              element.style.left = self.graph.x(o.value) + 'px';
+              element.classList.add('x_tick');
+              element.classList.add(self.ticksTreatment);
+
+              var title = document.createElement('div');
+              title.classList.add('title');
+              title.innerHTML = o.unit.formatter(moment.utc(o.value * 1000, 'x'));
+              element.appendChild(title);
+
+              self.graph.element.appendChild(element);
+              self.elements.push(element);
+            } );
+          }
+        } );
         new Rickshaw.Graph.Axis.Y.Scaled( {
           graph: trip_graph,
           tickFormat: function(d){ return d3.format(",")(d) + ' miles'; },
@@ -133,7 +162,36 @@ body * { vertical-align: top; }
           renderer:'line',
           series: mpgSeries
         });
-        new Rickshaw.Graph.Axis.Time( { graph: mpg_graph } );
+        new Rickshaw.Graph.Axis.Time( {
+          graph: mpg_graph,
+          render: function() {
+            this.elements.forEach( function(e) {
+              e.parentNode.removeChild(e);
+            } );
+
+            this.elements = [];
+
+            var offsets = this.tickOffsets();
+
+            offsets.forEach( function(o) {
+              
+              if (self.graph.x(o.value) > self.graph.x.range()[1]) return;
+          
+              var element = document.createElement('div');
+              element.style.left = self.graph.x(o.value) + 'px';
+              element.classList.add('x_tick');
+              element.classList.add(self.ticksTreatment);
+
+              var title = document.createElement('div');
+              title.classList.add('title');
+              title.innerHTML = o.unit.formatter(moment.utc(o.value * 1000, 'x'));
+              element.appendChild(title);
+
+              self.graph.element.appendChild(element);
+              self.elements.push(element);
+            } );
+          }
+        } );
         new Rickshaw.Graph.Axis.Y.Scaled( {
           graph: mpg_graph,
           tickFormat: function(d){ return d3.format(",")(d) + ' mpg'; },
