@@ -3,10 +3,11 @@ var argv = require('yargs').argv;
 var express = require('express');
 var app = express();
 var mysql = require('mysql');
+console.log(argv);
 var connection = mysql.createConnection({
   host: argv.host,
   user: argv.user,
-  password: argv.pass,
+  password: argv.password,
   database: argv.database
 });
 var moment = require('moment');
@@ -22,13 +23,6 @@ setInterval(function(){
 
 app.use(express.static(__dirname+"/static"));
 app.use(express.static(__dirname+"/bower_components"));
-
-
-app.get('/json/car/debug', function(req, res){
-  connection.query("select c.CarName, DATE_FORMAT(g.Date, '%Y-%m-%d') as Date from tabgas g, auto c where g.Car=c.id and PERIOD_DIFF(DATE_FORMAT(g.Date,'%Y%m'), DATE_FORMAT(CURRENT_DATE(), '%Y%m')) >= ? and own=1 order by c.id, Date", [-2], function(err, rows, fields){
-    res.send({result:rows});
-  });
-});
 
 app.get('/json/car/projection', function(req, res){
   connection.query("select g.Car carId, PERIOD_DIFF(DATE_FORMAT(max(g.Date),'%Y%m'), DATE_FORMAT(now(),'%Y%m')) timeDiff from tabgas g, auto c where g.Car=c.id and c.own=1 group by g.Car order by g.Car", function (err, rows, fields) {
