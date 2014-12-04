@@ -139,7 +139,7 @@ body * { vertical-align: top; }
         tg.append('g').attr('class', 'y axis').call(t_y_axis_tick).attr('transform','translate(50,0)');
         tg.append('g').attr('class', 'x axis').call(t_x_axis_tick).attr('transform','translate(0,'+(t_height-50)+')');
         
-        var t_vor = d3.geom.voronoi().clipExtent([[50, 0], [t_width, t_height-50]]).x(function(d){return d.x;}).y(function(d){return d.y;});
+        var t_vor = d3.geom.voronoi().clipExtent([[50, 30], [t_width, t_height-50]]).x(function(d){return d.x;}).y(function(d){return d.y;});
         var t_vert = [];
         tripSeries.forEach(function (ser, carIdx) {
           ser.data.forEach(function (row) {
@@ -227,8 +227,7 @@ body * { vertical-align: top; }
         mg.append('g').attr('class', 'x axis').call(m_x_axis_tick).attr('transform','translate(0,'+(m_height-50)+')');
 
 
-
-      var m_vor = d3.geom.voronoi().clipExtent([[50, 0], [m_width, m_height-50]]).x(function(d){return d.x;}).y(function(d){return d.y;});
+      var m_vor = d3.geom.voronoi().clipExtent([[50, 30], [m_width, m_height-50]]).x(function(d){return d.x;}).y(function(d){return d.y;});
         var m_vert = [];
         mpgSeries.forEach(function (ser, carIdx) {
           ser.data.forEach(function (row) {
