@@ -115,16 +115,16 @@ body * { vertical-align: top; }
         });
 
         var t_width = $('#trip_graph').width();
-        var t_height = $('#trip_graph').width()*.55;
+        var t_height = $('#trip_graph').width()*.66;
 
         var t_x_range = d3.time.scale().range([50,t_width]).domain(d3.extent(all_days));
-        var t_y_range = d3.scale.linear().range([t_height-50,0]).domain(d3.extent(all_trips)).nice();
+        var t_y_range = d3.scale.linear().range([t_height-50,30]).domain(d3.extent(all_trips)).nice();
 
         var t_y_axis_tick = d3.svg.axis().scale(t_y_range).orient('left').ticks(5);
         var t_y_axis_grid = d3.svg.axis().scale(t_y_range).orient('left').ticks(10).tickSize(-(t_width-50),0,0).tickFormat('');
 
         var t_x_axis_tick = d3.svg.axis().scale(t_x_range).orient('bottom').ticks(d3.time.months,4).tickFormat(d3.time.format('%b %y'));
-        var t_x_axis_grid = d3.svg.axis().scale(t_x_range).orient('bottom').ticks(d3.time.months,1).tickSize(-(t_height-50),0,0).tickFormat('');
+        var t_x_axis_grid = d3.svg.axis().scale(t_x_range).orient('bottom').ticks(d3.time.months,1).tickSize(-(t_height-80),0,0).tickFormat('');
 
         var t_lineFunc = d3.svg.line().x(function(d) { return t_x_range(d.x); }).y(function(d) { return t_y_range(d.y); }).interpolate('linear');
 
@@ -147,13 +147,25 @@ body * { vertical-align: top; }
           });
         });
 
+        tg.append("g").selectAll("circle")
+            .data(t_vert)
+          .enter().append("circle")
+            .attr("id", function(d, i) { 
+              return "t_point-"+i; })
+            .attr("transform", function(d) { return "translate(" + d.x+','+d.y + ")"; })
+            .attr('style',function(d){
+              return 'fill:'+palette(d.carIdx);
+            })
+            .attr("r", 3)
+            .attr('stroke', 'none');
+
         tg.append("g").attr('class','vor').selectAll('path')
           .data(t_vor(t_vert))
           .enter()
             .append("path")
             .attr("d", polygon)
             .on("mouseover", function(d, i) {
-              tg.select('circle#t_point-'+i).attr("r", 4)
+              tg.select('circle#t_point-'+i).attr("r", 6)
               tg.select('text#hover_name')
                 .attr('style', 'fill:'+palette(d.point.carIdx)+';')
                 .text(d.point.name);
@@ -165,7 +177,7 @@ body * { vertical-align: top; }
                 .text(d3.format(',')(d.point.trip) + " miles");
             })
             .on("mouseout", function(d, i) {
-              tg.select('circle#t_point-'+i).attr("r", 2)
+              tg.select('circle#t_point-'+i).attr("r", 3)
               tg.select('text#hover_name').text('');
               tg.select('text#hover_date').text('');
               tg.select('text#hover_value').text('');
@@ -173,43 +185,33 @@ body * { vertical-align: top; }
 
         tg.append('text')
           .attr('id','hover_name')
-          .attr('transform','translate(150,'+(t_height-10)+')')
+          .attr('transform','translate(150,20)')
           .text('');
         tg.append('text')
           .attr('id','hover_date')
           .attr('style','text-anchor:middle;')
-          .attr('transform','translate('+(t_width/2)+','+(t_height-10)+')')
+          .attr('transform','translate('+(t_width/2)+',20)')
           .text('');
         tg.append('text')
           .attr('id','hover_value')
           .attr('style','text-anchor:end;')
-          .attr('transform','translate('+(t_width-100)+','+(t_height-10)+')')
+          .attr('transform','translate('+(t_width-100)+',20)')
           .text('');
 
-        tg.append("g").selectAll("circle")
-            .data(t_vert)
-          .enter().append("circle")
-            .attr("id", function(d, i) { 
-              return "t_point-"+i; })
-            .attr("transform", function(d) { return "translate(" + d.x+','+d.y + ")"; })
-            .attr('style',function(d){
-              return 'fill:'+palette(d.carIdx);
-            })
-            .attr("r", 2)
-            .attr('stroke', 'none');
+        
 
 
         var m_width = $('#mpg_graph').width();
-        var m_height = $('#mpg_graph').width()*.55;
+        var m_height = $('#mpg_graph').width()*.66;
 
         var m_x_range = d3.time.scale().range([50,m_width]).domain(d3.extent(all_days));
-        var m_y_range = d3.scale.linear().range([m_height-50,0]).domain(d3.extent(all_mpgs)).nice();
+        var m_y_range = d3.scale.linear().range([m_height-50,30]).domain(d3.extent(all_mpgs)).nice();
 
         var m_y_axis_tick = d3.svg.axis().scale(m_y_range).orient('left').ticks(5);
         var m_y_axis_grid = d3.svg.axis().scale(m_y_range).orient('left').ticks(10).tickSize(-(m_width-50),0,0).tickFormat('');
 
         var m_x_axis_tick = d3.svg.axis().scale(m_x_range).orient('bottom').ticks(d3.time.months,4).tickFormat(d3.time.format('%b %y'));
-        var m_x_axis_grid = d3.svg.axis().scale(m_x_range).orient('bottom').ticks(d3.time.months,1).tickSize(-(m_width-45),0,0).tickFormat('');
+        var m_x_axis_grid = d3.svg.axis().scale(m_x_range).orient('bottom').ticks(d3.time.months,1).tickSize(-(m_height-80),0,0).tickFormat('');
 
         var m_lineFunc = d3.svg.line().x(function(d) { return m_x_range(d.x); }).y(function(d) { return m_y_range(d.y); }).interpolate('linear');
 
@@ -234,13 +236,25 @@ body * { vertical-align: top; }
           });
         });
 
+        mg.append("g").selectAll("circle")
+            .data(m_vert)
+          .enter().append("circle")
+            .attr("id", function(d, i) { 
+              return "m_point-"+i; })
+            .attr("transform", function(d) { return "translate(" + d.x+','+d.y + ")"; })
+            .attr('style',function(d){
+              return 'fill:'+palette(d.carIdx);
+            })
+            .attr("r", 3)
+            .attr('stroke', 'none');
+
         mg.append("g").attr('class','vor').selectAll('path')
           .data(m_vor(m_vert))
           .enter()
             .append("path")
             .attr("d", polygon)
             .on("mouseover", function(d, i) {
-              mg.select('circle#m_point-'+i).attr("r", 4)
+              mg.select('circle#m_point-'+i).attr("r", 6)
               mg.select('text#hover_name')
                 .attr('style', 'fill:'+palette(d.point.carIdx)+';')
                 .text(d.point.name);
@@ -252,7 +266,7 @@ body * { vertical-align: top; }
                 .text(d3.format(',.5r')(d.point.trip) + " mpg");
             })
             .on("mouseout", function(d, i) {
-              mg.select('circle#m_point-'+i).attr("r", 2)
+              mg.select('circle#m_point-'+i).attr("r", 3)
               mg.select('text#hover_name').text('');
               mg.select('text#hover_date').text('');
               mg.select('text#hover_value').text('');
@@ -260,32 +274,18 @@ body * { vertical-align: top; }
 
         mg.append('text')
           .attr('id','hover_name')
-          .attr('transform','translate(150,'+(m_height-10)+')')
+          .attr('transform','translate(150,20)')
           .text('');
         mg.append('text')
           .attr('id','hover_date')
           .attr('style','text-anchor:middle;')
-          .attr('transform','translate('+(m_width/2)+','+(m_height-10)+')')
+          .attr('transform','translate('+(m_width/2)+',20)')
           .text('');
         mg.append('text')
           .attr('id','hover_value')
           .attr('style','text-anchor:end;')
-          .attr('transform','translate('+(m_width-100)+','+(m_height-10)+')')
+          .attr('transform','translate('+(m_width-100)+',20)')
           .text('');
-
-        mg.append("g").selectAll("circle")
-            .data(m_vert)
-          .enter().append("circle")
-            .attr("id", function(d, i) { 
-              return "m_point-"+i; })
-            .attr("transform", function(d) { return "translate(" + d.x+','+d.y + ")"; })
-            .attr('style',function(d){
-              return 'fill:'+palette(d.carIdx);
-            })
-            .attr("r", 2)
-            .attr('stroke', 'none');
-
-
 
       });
     </script>
