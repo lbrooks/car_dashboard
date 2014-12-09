@@ -83,7 +83,13 @@ body * { vertical-align: top; }
       $.ajax({
         url:"/json/car/projection",
       }).done(function(data){
-        var newRows = d3.select('#js-tableData').selectAll('tr').data(data.result).enter().append("tr").style("background-color", function(d,i){return palette(i); });
+        var newRows = d3.select('#js-tableData')
+          .selectAll('tr')
+          .data(data.result)
+          .enter()
+            .append("tr")
+            .style("background-color", function(d,i){return palette(i); });
+
         newRows.append("td").text(function(d){ return d.name; });
         newRows.append("td").text(function(d){ return d3.format(",s")(d.nextMarker*10000); });
         newRows.append("td").text(function(d){ return d.est2 === 'Never' ?d.est2 :moment.utc(new Date(d.est2*1000)).format("MMMM YYYY"); });
@@ -108,13 +114,15 @@ body * { vertical-align: top; }
           var mpgData = { color: palette(car_i), name: car_e.name, data:[] };
 
           car_e.recorded.forEach(function(rec_e,rec_i,rec_a){
-            tripData.data.push({x:rec_e.month*1000, y:rec_e.trip});
-            mpgData.data.push({x:rec_e.month*1000, y:rec_e.mpg});
+            var cvt_time = parseFloat(moment.utc(new Date(rec_e.month*1000)).format('x'));
+            // var cvt_time = parseFloat(moment(new Date(rec_e.month*1000)).format('x'));
+            tripData.data.push({x:cvt_time, y:rec_e.trip});
+            mpgData.data.push({x:cvt_time, y:rec_e.mpg});
             all_trips.push(rec_e.trip*.9);
             all_mpgs.push(rec_e.mpg*.9);
             all_trips.push(rec_e.trip*1.05);
             all_mpgs.push(rec_e.mpg*1.05);
-            all_days.push(rec_e.month*1000);
+            all_days.push(cvt_time);
           });
 
           tripSeries.push(tripData);
